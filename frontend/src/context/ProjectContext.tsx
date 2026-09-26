@@ -13,6 +13,8 @@ import {
 } from '../data/demoData';
 import { generateBalancedTeams } from '../utils/teamBalancer';
 import { applyCoachSuggestionToTeam } from '../utils/aiCoachEngine';
+import { api } from '../services/api';
+import { isSupabaseConfigured } from '../services/supabase';
 
 interface ProjectContextType {
   currentView: AppView;
@@ -32,6 +34,7 @@ interface ProjectContextType {
   teamsSummary: string;
   isTeamsLocked: boolean;
   isDemoMode: boolean;
+  isCloudConnected: boolean;
   generateTeamsAction: (seedModifier?: number) => boolean;
   lockTeamsAction: () => void;
   updateTeamStage: (teamId: string, stageId: LifecycleStageId) => void;
@@ -78,7 +81,19 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({
   const [teamsSummary, setTeamsSummary] = useState<string>('');
   const [isTeamsLocked, setIsTeamsLocked] = useState<boolean>(false);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
+  const [isCloudConnected, setIsCloudConnected] = useState<boolean>(isSupabaseConfigured());
   const [toast, setToast] = useState<string | null>(null);
+
+  // Check backend health or supabase on mount
+  useEffect(() => {
+    api.checkHealth().then((res) => {
+      if (res && res.status === 'ok') {
+        setIsCloudConnected(true);
+      } else if (isSupabaseConfigured()) {
+        setIsCloudConnected(true);
+      }
+    });
+  }, []);
 
   // Auto clear toast after 3 seconds
   useEffect(() => {
@@ -142,7 +157,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
 
   const updateProjectConfig = (patch: Partial<ProjectConfig>) => {
-    setProjectConfig((prev) => ({ ...prev, ...patch }));
+    setProjectConfig((prev) => {
+      const updated = { ...prev, ...patch };
+      api.saveProject(updated).catch(() => {});
+      return updated;
+    });
   };
 
   const addStudent = (studentData: Omit<Student, 'id'>) => {
@@ -152,10 +171,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({
     };
     setStudents((prev) => [...prev, newStudent]);
     setToast(`Added student: ${newStudent.name}`);
+    api.addStudent(projectConfig.id, newStudent).catch(() => {});
   };
 
   const removeStudent = (id: string) => {
     setStudents((prev) => prev.filter((s) => s.id !== id));
+    api.deleteStudent(id).catch(() => {});
   };
 
   const loadDemoStudents = () => {
@@ -418,6 +439,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({
         teamsSummary,
         isTeamsLocked,
         isDemoMode,
+        isCloudConnected,
         generateTeamsAction,
         lockTeamsAction,
         updateTeamStage,

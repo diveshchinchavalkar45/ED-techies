@@ -24,6 +24,7 @@ export const Navbar: React.FC = () => {
     activeTeam,
     isTeamsLocked,
     isDemoMode,
+    isCloudConnected,
     resetAll,
     projectConfig,
   } = useProject();
@@ -59,11 +60,15 @@ export const Navbar: React.FC = () => {
                   <span className="font-bold text-gray-900 tracking-tight text-base sm:text-lg">
                     TeamSync <span className="text-indigo-600 font-extrabold">AI</span>
                   </span>
-                  {isDemoMode && (
+                  {isCloudConnected ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200" title="Connected to Supabase / Backend Cloud">
+                      Supabase
+                    </span>
+                  ) : isDemoMode ? (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
                       Demo
                     </span>
-                  )}
+                  ) : null}
                 </div>
                 <p className="text-[11px] text-gray-500 font-normal hidden sm:block">
                   Smart teams. Better projects.

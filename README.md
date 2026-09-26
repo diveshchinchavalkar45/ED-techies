@@ -1,136 +1,109 @@
-# TeamSync AI
+# TeamSync AI — Full-Stack Architecture
 
 > **Smart teams. Better projects.**  
-> A professional, minimalist web application for forming skill-balanced student project teams and guiding them autonomously through academic project lifecycles.
+> Autonomous student project team formation and lifecycle coaching platform.
 
 ---
 
-## 📌 Problem & Purpose
+## 🗂️ Project Structure
 
-Students often struggle with two critical bottlenecks during university group projects:
-1. **Unbalanced Team Formation:** Teams end up with duplicate skillsets (e.g., all frontend or all AI specialists) and lack leadership or coordination.
-2. **Loss of Direction Post-Formation:** Teams lose momentum and miss deadlines without clear milestone tracking and early warnings.
-
-**TeamSync AI** solves this with a transparent, rule-based team balancing engine paired with an autonomous **AI Project Coach** that offers timely, actionable suggestions to keep teams on track.
-
----
-
-## ✨ Key Features
-
-* **Student Skill & Preference Intake:**
-  * Collects technical proficiencies (Python, Web Dev, AI/ML, Cloud, UI/UX, Testing/QA, etc.).
-  * Collects soft skills (Leadership, Communication, Problem Solving, Time Management).
-  * Captures preferred team roles (Developer, AI/ML Specialist, UI/UX Designer, Coordinator, etc.).
-  * Includes a **Load Demo Students** button for instant demonstration.
-
-* **Rule-Based Skill-Balanced Team Formation:**
-  * Transparent algorithmic allocation distributing technical domains and leadership.
-  * Prevents duplicate role bottlenecks and single-skill clustering.
-  * Generates an interpretable **Skill Balance Score** (e.g., `87%`).
-  * Plain-language **"Why these teams?"** rationales for each generated roster.
-  * Supports re-balancing with the **Regenerate** button and locking teams.
-
-* **Linear 5-Stage Project Lifecycle:**
-  * Clean progression: `Define` ➔ `Plan` ➔ `Build` ➔ `Test` ➔ `Submit`.
-  * Concrete deliverables, progress sliders, role-assigned checklists, and milestone target dates.
-  * One-click stage advancement and completion.
-
-* **Autonomous AI Project Coach:**
-  * Lightweight dashboard assistant (max 2–3 actionable suggestions).
-  * Automatically detects:
-    * Unassigned responsibilities in *Plan* ➔ **Auto-Assign Owners**.
-    * Approaching deadlines with low progress in *Build* ➔ **Prioritize Core Tasks**.
-    * Inactive verification in *Test* ➔ **Generate Test Checklist**.
-    * Scope locks and final submission verification.
-  * One-click **Apply Suggestion** button directly updates the team state.
-
-* **Modern Minimalist SaaS Dashboard:**
-  * Clean typography, white/off-white background, indigo primary accent, and subtle borders.
-  * Desktop-first, fully responsive on laptops, tablets, and mobile devices.
-  * Persistent storage with browser `localStorage`.
-  * Interactive **Try Demo** mode (no login or backend required).
-
----
-
-## 🛠 Tech Stack
-
-* **Framework:** React 19 + TypeScript
-* **Build Tool:** Vite
-* **Styling:** Tailwind CSS
-* **Icons:** Lucide React
-* **State & Persistence:** React Context + LocalStorage API
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-* [Node.js](https://nodejs.org/) (v18 or higher recommended)
-* `npm` or `yarn`
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/diveshchinchavalkar45/ED-techies.git
-cd ED-techies
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Production Build
-
-```bash
-npm run build
-npm run preview
-```
-
----
-
-## 📂 Project Architecture
+The project has been segregated into three clean, independent directories:
 
 ```
 teamsync-ai/
-├── src/
-│   ├── components/
-│   │   ├── Navbar.tsx             # Minimal SaaS top navigation & team switcher
-│   │   ├── LandingPage.tsx        # Hero and 3 core feature pillars
-│   │   ├── ProjectSetup.tsx       # Step 1: Project configuration
-│   │   ├── StudentInput.tsx       # Step 2: Skill intake & tag selectors
-│   │   ├── TeamResults.tsx        # Step 3: Balanced teams cards & explanations
-│   │   ├── Dashboard.tsx          # Section 10 unified project dashboard
-│   │   ├── ProjectLifecycle.tsx   # 5-stage lifecycle manager & task checklist
-│   │   ├── AICoachPanel.tsx       # Autonomous AI coach widget
-│   │   ├── TeamsView.tsx          # All-teams comparative overview
-│   │   ├── ProjectView.tsx        # Course project timelines
-│   │   └── SettingsView.tsx       # Project parameters & demo reset
-│   ├── context/
-│   │   └── ProjectContext.tsx     # Global state & LocalStorage sync
-│   ├── data/
-│   │   └── demoData.ts            # Realistic 12-student academic dataset
-│   ├── types/
-│   │   └── index.ts               # Core TypeScript definitions
-│   ├── utils/
-│   │   ├── teamBalancer.ts        # Transparent rule-based balancing logic
-│   │   └── aiCoachEngine.ts       # AI Project Coach rules engine
-│   ├── App.tsx                    # Main app orchestrator
-│   ├── index.css                  # Tailwind styles
-│   └── main.tsx                   # React root entry
-├── index.html
-├── tailwind.config.js
-├── tsconfig.json
-└── package.json
+│
+├── 📂 frontend/        ➔ React 19 + TypeScript + Vite + Tailwind CSS (Deploy on Vercel)
+│   ├── src/            # UI components, lifecycle views, AI coach panel, Supabase client
+│   ├── public/         # Icons and static brand assets
+│   ├── vercel.json     # SPA routing configuration for Vercel
+│   ├── .env.example    # Frontend environment template
+│   └── package.json    # Frontend dependencies & scripts
+│
+├── 📂 backend/         ➔ Node.js + Express + TypeScript (Deploy on Render)
+│   ├── src/            # REST API routes, Team Balancer engine, Supabase admin client
+│   ├── render.yaml     # Render blueprint deployment configuration
+│   ├── .env.example    # Backend environment template
+│   └── package.json    # Backend dependencies & scripts
+│
+└── 📂 database/        ➔ Supabase PostgreSQL (Database Cloud)
+    ├── schema.sql      # Tables (projects, students, teams, team_members), RLS policies & indexes
+    ├── seed.sql        # Demo data (Smart Campus Assistant with 12 students & balanced teams)
+    └── README.md       # Step-by-step Supabase setup guide
 ```
 
 ---
 
-## 📄 License
+## 🚀 Quick Setup & Deployment Guide
 
-MIT License. Designed for higher education capstones, hackathons, and academic project teams.
+### 1️⃣ Database Setup (Supabase)
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. Go to **SQL Editor** in your Supabase project dashboard.
+3. Run the SQL script from [`database/schema.sql`](./database/schema.sql) to create the schema and security policies.
+4. *(Optional)* Run [`database/seed.sql`](./database/seed.sql) to populate demo students.
+5. In **Project Settings ➔ API**, note your credentials:
+   * **Project URL:** `https://your-project-id.supabase.co`
+   * **Anon (Public) Key:** `eyJhbGciOiJIUzI1NiIsInR...`
+   * **Service Role (Secret) Key:** `eyJhbGciOiJIUzI1NiIsInR...` *(Click Reveal)*
+
+---
+
+### 2️⃣ Backend Deployment on Render
+
+1. Push your repository to GitHub.
+2. Sign in to [Render](https://render.com).
+3. Click **New + ➔ Web Service** and connect your GitHub repository.
+4. Configure the service:
+   * **Name:** `teamsync-ai-backend`
+   * **Root Directory:** `backend`
+   * **Runtime:** `Node`
+   * **Build Command:** `npm install && npm run build`
+   * **Start Command:** `npm start`
+5. Under **Environment Variables**, add:
+   * `PORT`: `10000`
+   * `SUPABASE_URL`: *(Your Supabase Project URL)*
+   * `SUPABASE_SERVICE_ROLE_KEY`: *(Your Supabase Service Role Secret Key)*
+   * `SUPABASE_ANON_KEY`: *(Your Supabase Anon Public Key)*
+   * `FRONTEND_URL`: `https://your-frontend.vercel.app` *(or `*` for all origins)*
+6. Click **Deploy Web Service**.
+7. Once deployed, copy your backend URL (e.g., `https://teamsync-ai-backend.onrender.com`).
+   * Test health check: `https://teamsync-ai-backend.onrender.com/api/health`
+
+---
+
+### 3️⃣ Frontend Deployment on Vercel
+
+1. Sign in to [Vercel](https://vercel.com).
+2. Click **Add New ➔ Project** and import your GitHub repository.
+3. In project settings:
+   * **Framework Preset:** `Vite`
+   * **Root Directory:** Click *Edit* and select `frontend`
+   * **Build Command:** `npm run build`
+   * **Output Directory:** `dist`
+4. In **Environment Variables**, add:
+   * `VITE_API_URL`: *(Your Render backend URL, e.g. `https://teamsync-ai-backend.onrender.com`)*
+   * `VITE_SUPABASE_URL`: *(Your Supabase Project URL)*
+   * `VITE_SUPABASE_ANON_KEY`: *(Your Supabase Anon Public Key)*
+5. Click **Deploy**.
+
+---
+
+## 💻 Local Development
+
+### Run Backend
+```bash
+cd backend
+npm install
+# Create .env from .env.example
+npm run dev
+# Server running at http://localhost:5000
+```
+
+### Run Frontend
+```bash
+cd frontend
+npm install
+# Create .env from .env.example
+npm run dev
+# Client running at http://localhost:5173
+```
