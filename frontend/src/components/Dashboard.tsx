@@ -45,9 +45,15 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
-      {/* Top Main Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-200">
-        <div>
+      {/* Top Main Section Header with Team Backdrop */}
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-gray-200/90 p-5 sm:p-6 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Subtle background team watermark */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-2/5 sm:w-1/3 opacity-15 pointer-events-none bg-cover bg-center [mask-image:linear-gradient(to_left,white,transparent)]"
+          style={{ backgroundImage: `url('/hero-team.jpg')` }}
+        />
+
+        <div className="relative z-10">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-1">
             <span>Project Dashboard</span>
             <span className="text-gray-300">•</span>
@@ -63,7 +69,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Quick Team Switcher tabs */}
         {teams.length > 1 && (
-          <div className="flex items-center gap-1.5 bg-gray-100/80 p-1 rounded-xl border border-gray-200/80">
+          <div className="relative z-10 flex items-center gap-1.5 bg-gray-100/90 p-1 rounded-xl border border-gray-200/80 self-start sm:self-auto">
             {teams.map((t) => (
               <button
                 key={t.id}
